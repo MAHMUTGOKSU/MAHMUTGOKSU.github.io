@@ -16,30 +16,34 @@ Personal blog and portfolio website built with Next.js, featuring CV, blog posts
 
 ```
 MAHMUTGOKSU.github.io/
-├── app/                    # Next.js app directory
-│   ├── page.tsx           # Homepage
-│   ├── layout.tsx         # Root layout
-│   ├── globals.css        # Global styles
-│   ├── cv/                # CV page
-│   ├── blog/              # Blog pages
-│   │   ├── page.tsx       # Blog list
-│   │   └── [slug]/        # Dynamic blog post
-│   └── papers/            # Paper review pages
-│       ├── page.tsx       # Papers list
-│       └── [slug]/        # Dynamic paper review
-├── components/            # React components
-│   ├── Header.tsx
-│   ├── Footer.tsx
-│   └── MDXComponents.tsx  # Custom MDX components
-├── content/               # Content in MDX format
-│   ├── blog/             # Blog posts
-│   └── papers/           # Paper reviews
-├── lib/                   # Utilities
-│   └── mdx.ts            # MDX processing
+├── src/                    # Source code (cleaner structure!)
+│   ├── app/               # Next.js app directory
+│   │   ├── page.tsx       # Homepage
+│   │   ├── layout.tsx     # Root layout
+│   │   ├── globals.css    # Global styles
+│   │   ├── cv/            # CV page
+│   │   ├── blog/          # Blog pages
+│   │   │   ├── page.tsx   # Blog list
+│   │   │   └── [slug]/    # Dynamic blog post
+│   │   └── papers/        # Paper review pages
+│   │       ├── page.tsx   # Papers list
+│   │       └── [slug]/    # Dynamic paper review
+│   ├── components/        # React components
+│   │   ├── Header.tsx
+│   │   ├── Footer.tsx
+│   │   └── MDXComponents.tsx
+│   ├── content/           # Content in MDX format
+│   │   ├── blog/         # Blog posts
+│   │   └── papers/       # Paper reviews
+│   └── lib/              # Utilities
+│       └── mdx.ts        # MDX processing
 ├── public/               # Static assets
 │   └── cv.pdf           # Downloadable CV
-└── package.json         # Dependencies
+├── package.json         # Dependencies
+└── ... config files     # All config at root
 ```
+
+**Why `src/`?** Industry standard for cleaner organization - separates source code from configuration files!
 
 ## 🛠️ Tech Stack
 
@@ -55,7 +59,7 @@ MAHMUTGOKSU.github.io/
 
 ### Blog Posts
 
-Create a new file in `content/blog/`:
+Create a new file in `src/content/blog/`:
 
 ```mdx
 ---
@@ -80,7 +84,7 @@ print("Hello, World!")
 
 ### Paper Reviews
 
-Create a new file in `content/papers/`:
+Create a new file in `src/content/papers/`:
 
 ```mdx
 ---
@@ -150,6 +154,15 @@ The site is configured for static export. To deploy:
 1. Create new directory in `app/`
 2. Add `page.tsx` for the route
 3. Update navigation in `components/Header.tsx`
+
+## 🎨 Color Scheme
+
+**Yellow & Blackish Purple Theme:**
+- **Primary (Yellow)**: `#facc15` - Used for buttons, links, and accents
+- **Secondary (Purple)**: `#5b21b6` to `#7c3aed` - Blackish purple for elegance
+- **Dark Mode**: Deep purple background (`#1a0b2e`) for immersive reading
+
+The color scheme creates a vibrant, memorable identity while maintaining excellent readability!
 
 ## 🎨 Features in Detail
 
