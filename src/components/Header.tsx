@@ -27,10 +27,10 @@ export default function Header() {
             </li>
             <li>
               <Link
-                href="/blog"
+                href="/projects"
                 className="text-secondary-700 dark:text-secondary-300 hover:text-primary-500 dark:hover:text-primary-400 transition font-medium"
               >
-                Blog
+                Projects
               </Link>
             </li>
             <li>
@@ -38,7 +38,7 @@ export default function Header() {
                 href="/papers"
                 className="text-secondary-700 dark:text-secondary-300 hover:text-primary-500 dark:hover:text-primary-400 transition font-medium"
               >
-                Papers
+                Paper Reviews
               </Link>
             </li>
           </ul>

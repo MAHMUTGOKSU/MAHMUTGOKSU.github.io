@@ -1,0 +1,359 @@
+---
+title: "Production ML System for Recommendation"
+date: "2024-09-15"
+description: "End-to-end ML system for real-time personalized recommendations serving 1M+ users"
+tags: ["mlops", "recommendation", "kubernetes", "aws"]
+github: ""
+demo: ""
+---
+
+# Production ML Recommendation System
+
+A complete, production-grade machine learning system for personalized content recommendations, handling over 1 million daily active users with sub-100ms latency.
+
+## 🎯 Problem Statement
+
+Build a scalable recommendation system that:
+- Serves personalized recommendations in real-time (<100ms)
+- Handles 1M+ daily active users
+- Continuously learns from user interactions
+- Maintains high availability (99.9% uptime)
+
+## 🏗️ System Architecture
+
+### High-Level Overview
+
+```
+┌─────────────┐     ┌──────────────┐     ┌─────────────┐
+│   Mobile    │────▶│  API Gateway │────▶│   Rec API   │
+│     App     │     │   (Kong)     │     │  (FastAPI)  │
+└─────────────┘     └──────────────┘     └─────────────┘
+                                                 │
+                    ┌────────────────────────────┼────────────┐
+                    ▼                            ▼            ▼
+              ┌──────────┐              ┌──────────┐   ┌──────────┐
+              │  Model   │              │  Redis   │   │ Feature  │
+              │ Service  │              │  Cache   │   │  Store   │
+              │(PyTorch) │              │          │   │(Feast)   │
+              └──────────┘              └──────────┘   └──────────┘
+                    │
+                    ▼
+              ┌──────────┐              ┌──────────┐
+              │Training  │◀─────────────│ Kafka    │
+              │Pipeline  │              │ Streams  │
+              │(Airflow) │              │          │
+              └──────────┘              └──────────┘
+```
+
+## 🤖 ML Models
+
+### Two-Tower Neural Network
+
+Separate encoders for users and items:
+
+```python
+class TwoTowerModel(nn.Module):
+    def __init__(self, user_features, item_features, embedding_dim=128):
+        super().__init__()
+        
+        # User tower
+        self.user_encoder = nn.Sequential(
+            nn.Linear(user_features, 256),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+            nn.Linear(256, 128),
+            nn.ReLU(),
+            nn.Linear(128, embedding_dim)
+        )
+        
+        # Item tower
+        self.item_encoder = nn.Sequential(
+            nn.Linear(item_features, 256),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+            nn.Linear(256, 128),
+            nn.ReLU(),
+            nn.Linear(128, embedding_dim)
+        )
+        
+    def forward(self, user_features, item_features):
+        user_emb = self.user_encoder(user_features)
+        item_emb = self.item_encoder(item_features)
+        
+        # Cosine similarity
+        user_emb = F.normalize(user_emb, p=2, dim=1)
+        item_emb = F.normalize(item_emb, p=2, dim=1)
+        
+        scores = torch.matmul(user_emb, item_emb.T)
+        return scores
+```
+
+### Ranking Model
+
+XGBoost for final ranking:
+- Input: Candidate items + user context
+- Features: 150+ engineered features
+- Output: Click probability
+
+## 📊 Performance Metrics
+
+### Online Metrics
+| Metric | Before | After | Improvement |
+|--------|--------|-------|-------------|
+| CTR | 2.1% | 3.4% | **+62%** |
+| Session Length | 8.2 min | 11.7 min | **+43%** |
+| User Retention (7-day) | 23% | 31% | **+35%** |
+
+### System Metrics
+- **Latency (p99)**: 87ms
+- **Throughput**: 10,000 req/s
+- **Availability**: 99.94%
+- **Model Refresh**: Every 6 hours
+
+## 🚀 Key Technical Decisions
+
+### 1. Two-Stage Retrieval
+
+**Problem**: Can't score all 10M items in real-time
+
+**Solution**: 
+1. **Retrieval**: Fast approximate nearest neighbor (FAISS)
+   - Index 10M item embeddings
+   - Retrieve top 1000 candidates in <20ms
+   
+2. **Ranking**: Precise scoring with XGBoost
+   - Score 1000 candidates in <50ms
+   - More complex features possible
+
+### 2. Feature Store (Feast)
+
+Unified feature management:
+
+```python
+# Define features
+user_features = FeatureView(
+    name="user_features",
+    entities=["user_id"],
+    ttl=timedelta(days=7),
+    schema=[
+        Field(name="age", dtype=Int32),
+        Field(name="location", dtype=String),
+        Field(name="interests", dtype=Array(String)),
+    ],
+    online=True,
+    source=RedshiftSource(...)
+)
+
+# Fetch at serving time
+features = feature_store.get_online_features(
+    entity_rows=[{"user_id": user_id}],
+    features=["user_features:age", "user_features:location"]
+).to_dict()
+```
+
+### 3. Real-time Feature Updates
+
+Stream processing with Kafka:
+
+```python
+# User interaction → Feature update
+@app.stream_processor
+async def process_interaction(event):
+    user_id = event['user_id']
+    item_id = event['item_id']
+    
+    # Update user profile
+    user_profile = await redis.get(f"user:{user_id}")
+    user_profile['recent_items'].append(item_id)
+    user_profile['last_active'] = datetime.now()
+    
+    await redis.set(f"user:{user_id}", user_profile, ex=86400)
+    
+    # Trigger model retraining if needed
+    if should_retrain():
+        await trigger_training_pipeline()
+```
+
+## 🔧 Infrastructure
+
+### Kubernetes Deployment
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recommendation-api
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: rec-api
+  template:
+    spec:
+      containers:
+      - name: api
+        image: rec-api:latest
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+        env:
+        - name: MODEL_PATH
+          value: "s3://models/latest"
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: rec-api-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: recommendation-api
+  minReplicas: 10
+  maxReplicas: 50
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+```
+
+### Cost Optimization
+
+**Initial Setup**: $15,000/month
+- EC2 instances: $8,000
+- RDS: $3,500
+- Redis: $2,000
+- Data transfer: $1,500
+
+**Optimized**: $6,200/month (-59%)
+- Spot instances: $3,000 (-62%)
+- RDS reserved: $1,800 (-49%)
+- ElastiCache reserved: $900 (-55%)
+- Optimized data flow: $500 (-67%)
+
+## 📈 Training Pipeline
+
+### Daily Batch Training (Airflow)
+
+```python
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+
+dag = DAG('recommendation_training', schedule_interval='0 2 * * *')
+
+# 1. Extract features
+extract = PythonOperator(
+    task_id='extract_features',
+    python_callable=extract_features,
+    dag=dag
+)
+
+# 2. Train model
+train = PythonOperator(
+    task_id='train_model',
+    python_callable=train_two_tower_model,
+    dag=dag
+)
+
+# 3. Evaluate
+evaluate = PythonOperator(
+    task_id='evaluate',
+    python_callable=evaluate_model,
+    dag=dag
+)
+
+# 4. Deploy if better
+deploy = PythonOperator(
+    task_id='deploy',
+    python_callable=deploy_if_better,
+    dag=dag
+)
+
+extract >> train >> evaluate >> deploy
+```
+
+## 🎯 A/B Testing Framework
+
+Implemented rigorous experimentation:
+
+```python
+@ab_test(name="new_ranking_model", traffic_split=0.1)
+async def get_recommendations(user_id: str, variant: str):
+    if variant == "control":
+        model = load_model("current")
+    else:
+        model = load_model("candidate")
+    
+    recommendations = model.predict(user_id)
+    
+    # Log for analysis
+    log_recommendation_event(
+        user_id=user_id,
+        variant=variant,
+        recommendations=recommendations
+    )
+    
+    return recommendations
+```
+
+**Results Tracking**:
+- Statistical significance calculator
+- Real-time dashboards (Grafana)
+- Automated email reports
+
+## 💡 Key Learnings
+
+### 1. Cold Start Problem
+
+**Solution**: Hybrid approach
+- New users: Popularity-based + demographic similarity
+- New items: Content-based features
+- Warm up: Collect 10+ interactions → Switch to collaborative filtering
+
+### 2. Diversity vs Relevance
+
+Too much personalization → Filter bubble
+
+**Solution**: Re-ranking with MMR (Maximal Marginal Relevance):
+
+$$
+\text{MMR} = \arg\max_{d \in R \setminus S} \left[ \lambda \cdot \text{Sim}_1(d, Q) - (1-\lambda) \cdot \max_{d' \in S} \text{Sim}_2(d, d') \right]
+$$
+
+### 3. Monitoring is Critical
+
+Implemented comprehensive monitoring:
+- **Model drift**: Distribution of predictions
+- **Data drift**: Feature distributions
+- **Performance**: Latency, throughput, errors
+- **Business**: CTR, engagement, retention
+
+## 🛠️ Tech Stack
+
+- **ML**: PyTorch, XGBoost, FAISS
+- **API**: FastAPI, Redis
+- **Orchestration**: Airflow, Kubernetes
+- **Monitoring**: Prometheus, Grafana
+- **Feature Store**: Feast
+- **Streaming**: Kafka
+- **Cloud**: AWS (EC2, S3, RDS, ElastiCache)
+
+## 📚 Resources
+
+- [Two-Tower Models Paper](https://research.google/pubs/pub48840/)
+- [Feast Documentation](https://feast.dev/)
+- [FAISS for Similarity Search](https://github.com/facebookresearch/faiss)
+
+---
+
+**Impact**: Improved user engagement by 43% while reducing infrastructure costs by 59%.
+
+*This project demonstrates end-to-end ML system design from problem definition to production deployment at scale.*
+
