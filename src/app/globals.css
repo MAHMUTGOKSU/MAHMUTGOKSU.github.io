@@ -6,18 +6,18 @@
 @import 'katex/dist/katex.min.css';
 
 :root {
-  --foreground: #1a0b2e;
+  --foreground: #070012;
   --background: #ffffff;
-  --accent: #facc15;
-  --purple: #5b21b6;
+  --accent: #fcde44;
+  --purple: #070012;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground: #fef9c3;
-    --background: #1a0b2e;
-    --accent: #facc15;
-    --purple: #7c3aed;
+    --foreground: #fffce0;
+    --background: #070012;
+    --accent: #fcde44;
+    --purple: #070012;
   }
 }
 
@@ -40,15 +40,15 @@ code {
 
 /* Override prism colors for our theme */
 .prism-code {
-  background-color: #2d1b4e !important;
+  background-color: #0f0524 !important;
 }
 
 pre[class*="language-"] {
-  background: #2d1b4e;
+  background: #0f0524;
 }
 
 .token.keyword {
-  color: #facc15 !important;
+  color: #fcde44 !important;
 }
 
 .token.function {
@@ -56,6 +56,6 @@ pre[class*="language-"] {
 }
 
 .token.string {
-  color: #fde047 !important;
+  color: #fff494 !important;
 }
 

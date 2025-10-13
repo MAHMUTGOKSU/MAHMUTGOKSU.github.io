@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Header() {
   return (
-    <header className="border-b-2 border-secondary-200 dark:border-secondary-800 bg-white dark:bg-dark shadow-sm">
+    <header className="border-b-2 border-primary-400 dark:border-primary-500 bg-white dark:bg-dark shadow-sm">
       <nav className="container mx-auto px-4 py-6 max-w-5xl">
         <div className="flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-500 bg-clip-text text-transparent hover:from-primary-500 hover:to-secondary-600 transition">

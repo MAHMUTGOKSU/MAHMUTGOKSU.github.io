@@ -15,7 +15,7 @@ export default async function PapersPage() {
         {papers.map((paper) => (
           <article
             key={paper.slug}
-            className="border-b pb-8 last:border-b-0"
+            className="border-b border-primary-300 dark:border-primary-700 pb-8 last:border-b-0"
           >
             <Link href={`/papers/${paper.slug}`} className="group">
               <h2 className="text-2xl font-bold mb-2 group-hover:text-blue-600 transition">

@@ -11,16 +11,16 @@ const config: Config = {
       colors: {
         // Custom color scheme: Yellow & Blackish Purple
         primary: {
-          50: '#fefce8',   // Lightest yellow
-          100: '#fef9c3',
-          200: '#fef08a',
-          300: '#fde047',
-          400: '#facc15',  // Main yellow
-          500: '#eab308',
-          600: '#ca8a04',
-          700: '#a16207',
-          800: '#854d0e',
-          900: '#713f12',  // Dark yellow
+          50: '#fffef5',   // Lightest yellow
+          100: '#fffce0',
+          200: '#fff9c2',
+          300: '#fff494',
+          400: '#fcde44',  // Main yellow (your custom color!)
+          500: '#f5d12d',
+          600: '#e8c01f',
+          700: '#d4a615',
+          800: '#b58a12',
+          900: '#8a6610',  // Dark yellow
         },
         secondary: {
           50: '#f5f3ff',   // Lightest purple
@@ -36,9 +36,9 @@ const config: Config = {
           950: '#2e1065',  // Almost black purple
         },
         dark: {
-          DEFAULT: '#1a0b2e', // Very dark purple (almost black)
-          lighter: '#2d1b4e',
-          darker: '#0f0520',
+          DEFAULT: '#070012', // Very dark blue-black (almost pure black)
+          lighter: '#0f0524',
+          darker: '#000000',
         }
       },
       typography: {
@@ -47,13 +47,13 @@ const config: Config = {
             maxWidth: '65ch',
             color: 'inherit',
             a: {
-              color: '#facc15',  // Yellow links
+              color: '#fcde44',  // Yellow links
               '&:hover': {
-                color: '#eab308',  // Darker yellow on hover
+                color: '#f5d12d',  // Darker yellow on hover
               },
             },
             code: {
-              color: '#facc15',
+              color: '#fcde44',
             },
             'code::before': {
               content: '""',

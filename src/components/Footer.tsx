@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="border-t-2 border-secondary-200 dark:border-secondary-800 mt-12 bg-white dark:bg-dark">
+    <footer className="border-t-2 border-primary-400 dark:border-primary-500 mt-12 bg-white dark:bg-dark">
       <div className="container mx-auto px-4 py-6 max-w-5xl">
         <div className="flex justify-between items-center">
           <p className="text-gray-600 dark:text-gray-400">

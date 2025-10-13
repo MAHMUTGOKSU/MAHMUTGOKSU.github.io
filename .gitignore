@@ -1,36 +1,209 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
+# ==========================================
+# Dependencies
+# ==========================================
 /node_modules
 /.pnp
 .pnp.js
+/bower_components
 
-# testing
+# ==========================================
+# Testing
+# ==========================================
 /coverage
+*.coverage
+.nyc_output
+.jest-cache
 
-# next.js
+# ==========================================
+# Next.js
+# ==========================================
 /.next/
 /out/
+.next
+next-env.d.ts
 
-# production
+# ==========================================
+# Production
+# ==========================================
 /build
+/dist
 
-# misc
-.DS_Store
-*.pem
+# ==========================================
+# Environment Variables
+# ==========================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
 
-# debug
+# ==========================================
+# Debug Logs
+# ==========================================
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# local env files
-.env*.local
+# ==========================================
+# Operating System Files
+# ==========================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
 
-# vercel
-.vercel
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
 
-# typescript
+# Linux
+*~
+.directory
+.Trash-*
+
+# ==========================================
+# Editor & IDE Files
+# ==========================================
+# VSCode
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+.history/
+
+# JetBrains IDEs (WebStorm, IntelliJ, etc.)
+.idea/
+*.iml
+*.ipr
+*.iws
+.idea_modules/
+out/
+cmake-build-*/
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+Session.vim
+Sessionx.vim
+.netrwhist
+*~
+tags
+[._]*.un~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# ==========================================
+# TypeScript
+# ==========================================
 *.tsbuildinfo
-next-env.d.ts
+*.tgz
 
+# ==========================================
+# Deployment & Cloud
+# ==========================================
+.vercel
+.netlify
+.firebase
+.serverless
+
+# ==========================================
+# Package Manager Locks (Optional - Uncomment if needed)
+# ==========================================
+# If you want to commit lock files, keep them commented
+# If working solo or want reproducible builds, commit them
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# ==========================================
+# Content Drafts & Temporary Files
+# ==========================================
+# Uncomment these if you want to keep drafts private
+# src/content/**/*draft*.mdx
+# src/content/**/*wip*.mdx
+*.draft.mdx
+*.wip.mdx
+*.tmp
+*.temp
+.scratch/
+drafts/
+
+# ==========================================
+# Static Analysis & Linting
+# ==========================================
+.eslintcache
+.stylelintcache
+.prettiercache
+
+# ==========================================
+# Cache Files
+# ==========================================
+.cache/
+.parcel-cache/
+.turbo/
+
+# ==========================================
+# Misc
+# ==========================================
+*.pem
+*.log
+*.swp
+*.swo
+*.bak
+.local
+
+# ==========================================
+# Personal Notes (Optional)
+# ==========================================
+# Uncomment if you keep personal notes you don't want to commit
+# NOTES.md
+# TODO.md
+# PERSONAL.md
+/Users/mahmutzahidgoksu/Desktop/MAHMUTGOKSU.github.io/GETTING_STARTED.md
+/Users/mahmutzahidgoksu/Desktop/MAHMUTGOKSU.github.io/GITIGNORE_GUIDE.md
