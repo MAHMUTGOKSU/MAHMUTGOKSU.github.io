@@ -6,14 +6,18 @@
 @import 'katex/dist/katex.min.css';
 
 :root {
-  --foreground: #171717;
+  --foreground: #1a0b2e;
   --background: #ffffff;
+  --accent: #facc15;
+  --purple: #5b21b6;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground: #ededed;
-    --background: #0a0a0a;
+    --foreground: #fef9c3;
+    --background: #1a0b2e;
+    --accent: #facc15;
+    --purple: #7c3aed;
   }
 }
 
@@ -31,6 +35,27 @@ code {
   font-family: 'Courier New', Courier, monospace;
 }
 
-/* Prism theme for syntax highlighting */
-@import 'prism-themes/themes/prism-nord.css';
+/* Custom Prism theme with purple/yellow */
+@import 'prism-themes/themes/prism-material-dark.css';
+
+/* Override prism colors for our theme */
+.prism-code {
+  background-color: #2d1b4e !important;
+}
+
+pre[class*="language-"] {
+  background: #2d1b4e;
+}
+
+.token.keyword {
+  color: #facc15 !important;
+}
+
+.token.function {
+  color: #a78bfa !important;
+}
+
+.token.string {
+  color: #fde047 !important;
+}
 

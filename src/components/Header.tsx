@@ -2,17 +2,17 @@ import Link from "next/link";
 
 export default function Header() {
   return (
-    <header className="border-b">
+    <header className="border-b-2 border-secondary-200 dark:border-secondary-800 bg-white dark:bg-dark shadow-sm">
       <nav className="container mx-auto px-4 py-6 max-w-5xl">
         <div className="flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold">
+          <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-500 bg-clip-text text-transparent hover:from-primary-500 hover:to-secondary-600 transition">
             MZG
           </Link>
           <ul className="flex gap-8">
             <li>
               <Link
                 href="/"
-                className="hover:text-blue-600 transition"
+                className="text-secondary-700 dark:text-secondary-300 hover:text-primary-500 dark:hover:text-primary-400 transition font-medium"
               >
                 Home
               </Link>
@@ -20,7 +20,7 @@ export default function Header() {
             <li>
               <Link
                 href="/cv"
-                className="hover:text-blue-600 transition"
+                className="text-secondary-700 dark:text-secondary-300 hover:text-primary-500 dark:hover:text-primary-400 transition font-medium"
               >
                 CV
               </Link>
@@ -28,7 +28,7 @@ export default function Header() {
             <li>
               <Link
                 href="/blog"
-                className="hover:text-blue-600 transition"
+                className="text-secondary-700 dark:text-secondary-300 hover:text-primary-500 dark:hover:text-primary-400 transition font-medium"
               >
                 Blog
               </Link>
@@ -36,7 +36,7 @@ export default function Header() {
             <li>
               <Link
                 href="/papers"
-                className="hover:text-blue-600 transition"
+                className="text-secondary-700 dark:text-secondary-300 hover:text-primary-500 dark:hover:text-primary-400 transition font-medium"
               >
                 Papers
               </Link>

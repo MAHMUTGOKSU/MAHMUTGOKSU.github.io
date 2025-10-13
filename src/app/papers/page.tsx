@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getAllPosts } from "@/lib/mdx";
+import { getAllPosts } from "@/src/lib/mdx";
 
 export default async function PapersPage() {
   const papers = await getAllPosts("papers");

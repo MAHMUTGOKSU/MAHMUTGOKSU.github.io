@@ -18,7 +18,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     a: ({ href, children }) => (
       <a
         href={href}
-        className="text-blue-600 hover:underline"
+        className="text-primary-500 hover:text-primary-600 underline decoration-primary-400"
         target={href?.startsWith("http") ? "_blank" : undefined}
         rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
       >
@@ -29,7 +29,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       const isInline = !className;
       if (isInline) {
         return (
-          <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-sm font-mono">
+          <code className="bg-primary-100 dark:bg-secondary-900 text-secondary-800 dark:text-primary-300 px-1.5 py-0.5 rounded text-sm font-mono">
             {children}
           </code>
         );
@@ -42,7 +42,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       </pre>
     ),
     blockquote: ({ children }) => (
-      <blockquote className="border-l-4 border-blue-500 pl-4 italic my-4 text-gray-700 dark:text-gray-300">
+      <blockquote className="border-l-4 border-primary-400 pl-4 italic my-4 text-gray-700 dark:text-gray-300 bg-secondary-50 dark:bg-secondary-950 py-2">
         {children}
       </blockquote>
     ),

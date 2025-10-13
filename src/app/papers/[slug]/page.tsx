@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
-import { getAllPosts, getPostBySlug } from "@/lib/mdx";
+import { getAllPosts, getPostBySlug } from "@/src/lib/mdx";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import { useMDXComponents } from "@/components/MDXComponents";
+import { useMDXComponents } from "@/src/components/MDXComponents";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import rehypePrism from "rehype-prism-plus";

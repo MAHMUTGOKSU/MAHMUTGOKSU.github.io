@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getAllPosts } from "@/lib/mdx";
+import { getAllPosts } from "@/src/lib/mdx";
 
 export default async function Home() {
   const blogPosts = await getAllPosts("blog");
@@ -9,11 +9,13 @@ export default async function Home() {
     <div className="space-y-12">
       {/* Hero Section */}
       <section className="text-center py-12">
-        <h1 className="text-5xl font-bold mb-4">Mahmut Zahid Göksu</h1>
-        <p className="text-xl text-gray-600 dark:text-gray-400 mb-6">
+        <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-primary-400 to-secondary-500 bg-clip-text text-transparent">
+          Mahmut Zahid Göksu
+        </h1>
+        <p className="text-xl text-secondary-700 dark:text-secondary-300 mb-6">
           Machine Learning Engineer & Researcher
         </p>
-        <p className="text-lg max-w-2xl mx-auto mb-8">
+        <p className="text-lg max-w-2xl mx-auto mb-8 text-gray-700 dark:text-gray-300">
           Welcome to my personal space where I share my CV, thoughts on events,
           and in-depth paper reviews. Exploring the intersection of machine learning,
           research, and practical applications.
@@ -21,13 +23,13 @@ export default async function Home() {
         <div className="flex gap-4 justify-center">
           <Link
             href="/cv"
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition"
+            className="bg-gradient-to-r from-primary-400 to-primary-500 text-dark px-6 py-3 rounded-lg hover:from-primary-500 hover:to-primary-600 transition font-semibold shadow-lg"
           >
             View CV
           </Link>
           <Link
             href="/blog"
-            className="border border-blue-600 text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50 transition"
+            className="border-2 border-secondary-600 text-secondary-700 dark:text-secondary-300 px-6 py-3 rounded-lg hover:bg-secondary-50 dark:hover:bg-secondary-950 transition font-semibold"
           >
             Read Blog
           </Link>
@@ -37,8 +39,8 @@ export default async function Home() {
       {/* Recent Blog Posts */}
       <section>
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-3xl font-bold">Recent Thoughts</h2>
-          <Link href="/blog" className="text-blue-600 hover:underline">
+          <h2 className="text-3xl font-bold text-secondary-800 dark:text-secondary-200">Recent Thoughts</h2>
+          <Link href="/blog" className="text-primary-500 hover:text-primary-600 font-semibold hover:underline">
             View all →
           </Link>
         </div>
@@ -47,13 +49,13 @@ export default async function Home() {
             <Link
               key={post.slug}
               href={`/blog/${post.slug}`}
-              className="border rounded-lg p-6 hover:shadow-lg transition"
+              className="border-2 border-secondary-200 dark:border-secondary-800 rounded-lg p-6 hover:shadow-lg hover:border-primary-400 dark:hover:border-primary-500 transition bg-white dark:bg-dark-lighter"
             >
-              <h3 className="text-xl font-semibold mb-2">{post.title}</h3>
+              <h3 className="text-xl font-semibold mb-2 text-secondary-900 dark:text-primary-400">{post.title}</h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
                 {post.description}
               </p>
-              <div className="text-sm text-gray-500">
+              <div className="text-sm text-gray-500 dark:text-gray-500">
                 {new Date(post.date).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
@@ -68,8 +70,8 @@ export default async function Home() {
       {/* Recent Paper Reviews */}
       <section>
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-3xl font-bold">Paper Reviews</h2>
-          <Link href="/papers" className="text-blue-600 hover:underline">
+          <h2 className="text-3xl font-bold text-secondary-800 dark:text-secondary-200">Paper Reviews</h2>
+          <Link href="/papers" className="text-primary-500 hover:text-primary-600 font-semibold hover:underline">
             View all →
           </Link>
         </div>
@@ -78,9 +80,9 @@ export default async function Home() {
             <Link
               key={paper.slug}
               href={`/papers/${paper.slug}`}
-              className="border rounded-lg p-6 hover:shadow-lg transition"
+              className="border-2 border-secondary-200 dark:border-secondary-800 rounded-lg p-6 hover:shadow-lg hover:border-primary-400 dark:hover:border-primary-500 transition bg-white dark:bg-dark-lighter"
             >
-              <h3 className="text-xl font-semibold mb-2">{paper.title}</h3>
+              <h3 className="text-xl font-semibold mb-2 text-secondary-900 dark:text-primary-400">{paper.title}</h3>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
                 {paper.description}
               </p>
@@ -90,7 +92,7 @@ export default async function Home() {
                     {paper.tags.slice(0, 3).map((tag: string) => (
                       <span
                         key={tag}
-                        className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded"
+                        className="bg-secondary-100 dark:bg-secondary-900 text-secondary-800 dark:text-secondary-200 px-2 py-1 rounded"
                       >
                         {tag}
                       </span>
