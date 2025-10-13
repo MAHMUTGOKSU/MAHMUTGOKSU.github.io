@@ -9,16 +9,11 @@ export default async function Home() {
     <div className="space-y-12">
       {/* Hero Section */}
       <section className="text-center py-12">
-        <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-primary-400 to-secondary-500 bg-clip-text text-transparent">
-          Mahmut Zahid Göksu
+        <h1 className="text-6xl font-bold mb-8 bg-gradient-to-r from-primary-400 to-secondary-500 bg-clip-text text-transparent">
+          Welcome !
         </h1>
-        <p className="text-xl text-secondary-700 dark:text-secondary-300 mb-6">
-          Machine Learning Engineer & Researcher
-        </p>
-        <p className="text-lg max-w-2xl mx-auto mb-8 text-gray-700 dark:text-gray-300">
-          Welcome to my personal space where I share my projects, research implementations,
-          and in-depth paper reviews. Exploring the intersection of machine learning,
-          research, and practical applications.
+        <p className="text-lg max-w-3xl mx-auto mb-8 text-gray-700 dark:text-gray-300 leading-relaxed text-left">
+          This is my page where you will see my projects and paper reviews. The aim of this page is not for me to show myself to the world but to help me get motivated, to learn, build and explore new ideas. I love reading papers and I enjoy talking about them more. I have been struggling to talk to people so I came up with this idea: If I wrote about them they would stay with me forever. Every week I will be writing a review on a paper of my choosing, most probably relevant to what I am working on, and discuss the idea. The main goal is not to get everything correct but to understand as well as I can and communicate it to you reader (or me :). The content will not be AI generated in any way because I value my understanding and AI does not help that much for my case. LETS GET STARTED...
         </p>
         <div className="flex justify-center">
           <Link
