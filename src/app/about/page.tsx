@@ -14,7 +14,7 @@ export default function AboutPage() {
       {/* Introduction Card */}
       <div className="bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-dark-lighter dark:to-secondary-950 rounded-lg p-8 mb-12 border-2 border-primary-200 dark:border-primary-700">
         <p className="text-lg text-gray-800 dark:text-gray-200 leading-relaxed">
-          Hi! I'm <span className="font-semibold text-primary-600 dark:text-primary-400">Mahmut Zahid Göksu</span>, 
+          Hi! I&apos;m <span className="font-semibold text-primary-600 dark:text-primary-400">Mahmut Zahid Göksu</span>, 
           a Machine Learning Engineer passionate about deep learning, natural language processing, and computer vision. 
           I love building practical AI solutions and diving deep into research.
         </p>
@@ -27,7 +27,7 @@ export default function AboutPage() {
             🎓 Background
           </h2>
           <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
-            I'm pursuing my Bachelor's degree in <span className="font-semibold">Computer Engineering</span> at 
+            I&apos;m pursuing my Bachelor&apos;s degree in <span className="font-semibold">Computer Engineering</span> at 
             <span className="font-semibold text-secondary-700 dark:text-secondary-300"> Koç University</span> in Istanbul, Turkey. 
             My coursework spans machine learning, deep learning, computer vision, reinforcement learning, and deep unsupervised learning.
           </p>
@@ -183,7 +183,7 @@ export default function AboutPage() {
         {/* Get in Touch */}
         <section className="text-center py-8 bg-gradient-to-r from-secondary-50 to-primary-50 dark:from-secondary-950 dark:to-dark-lighter rounded-lg border-2 border-primary-300 dark:border-primary-700">
           <h2 className="text-3xl font-bold mb-4 text-secondary-800 dark:text-primary-400">
-            💬 Let's Connect
+            💬 Let&apos;s Connect
           </h2>
           <p className="text-gray-700 dark:text-gray-300 text-lg mb-6 max-w-2xl mx-auto">
             Interested in discussing machine learning, collaborating on projects, or just chatting about AI research? 

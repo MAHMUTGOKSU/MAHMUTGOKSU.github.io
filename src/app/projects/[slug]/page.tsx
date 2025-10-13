@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { getAllPosts, getPostBySlug } from "@/src/lib/mdx";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import { useMDXComponents } from "@/src/components/MDXComponents";
+import { customMDXComponents } from "@/src/components/MDXComponents";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import rehypePrism from "rehype-prism-plus";
@@ -29,8 +29,6 @@ export default async function ProjectPage({ params }: { params: { slug: string }
   if (!project) {
     notFound();
   }
-
-  const components = useMDXComponents({});
 
   return (
     <article className="max-w-4xl mx-auto">
@@ -95,7 +93,7 @@ export default async function ProjectPage({ params }: { params: { slug: string }
       <div className="prose prose-lg dark:prose-invert max-w-none">
         <MDXRemote
           source={project.content}
-          components={components}
+          components={customMDXComponents}
           options={{
             mdxOptions: {
               remarkPlugins: [remarkMath],

@@ -16,7 +16,7 @@ export interface Post {
   [key: string]: any;
 }
 
-export async function getAllPosts(type: "blog" | "papers"): Promise<Post[]> {
+export async function getAllPosts(type: "blog" | "papers" | "projects"): Promise<Post[]> {
   const postsDirectory = path.join(contentDirectory, type);
   
   // Create directory if it doesn't exist
@@ -53,7 +53,7 @@ export async function getAllPosts(type: "blog" | "papers"): Promise<Post[]> {
 }
 
 export async function getPostBySlug(
-  type: "blog" | "papers",
+  type: "blog" | "papers" | "projects",
   slug: string
 ): Promise<Post | null> {
   try {
