@@ -205,5 +205,12 @@ drafts/
 # NOTES.md
 # TODO.md
 # PERSONAL.md
-/Users/mahmutzahidgoksu/Desktop/MAHMUTGOKSU.github.io/GETTING_STARTED.md
-/Users/mahmutzahidgoksu/Desktop/MAHMUTGOKSU.github.io/GITIGNORE_GUIDE.md
+
+# ==========================================
+# Documentation & Guide Files (Not for repo)
+# ==========================================
+# Keep only README.md, ignore other guide files
+GETTING_STARTED.md
+GITIGNORE_GUIDE.md
+WRITING_GUIDE.md
+CHANGES.md
