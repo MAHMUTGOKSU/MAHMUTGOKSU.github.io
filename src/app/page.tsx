@@ -20,18 +20,12 @@ export default async function Home() {
           and in-depth paper reviews. Exploring the intersection of machine learning,
           research, and practical applications.
         </p>
-        <div className="flex gap-4 justify-center">
+        <div className="flex justify-center">
           <Link
-            href="/projects"
+            href="/about"
             className="bg-gradient-to-r from-primary-400 to-primary-500 text-dark px-6 py-3 rounded-lg hover:from-primary-500 hover:to-primary-600 transition font-semibold shadow-lg"
           >
-            View Projects
-          </Link>
-          <Link
-            href="/papers"
-            className="border-2 border-primary-500 text-secondary-700 dark:text-primary-400 px-6 py-3 rounded-lg hover:bg-primary-50 dark:hover:bg-dark-lighter transition font-semibold"
-          >
-            Paper Reviews
+            About Me
           </Link>
         </div>
       </section>
