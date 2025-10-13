@@ -1,0 +1,256 @@
+---
+title: "Denoising Diffusion Probabilistic Models - Review"
+date: "2024-10-08"
+description: "Understanding the mathematics and intuition behind diffusion models for generative AI."
+tags: ["diffusion-models", "generative-ai", "computer-vision"]
+---
+
+# Denoising Diffusion Probabilistic Models
+
+**Paper**: Denoising Diffusion Probabilistic Models  
+**Authors**: Ho et al.  
+**Year**: 2020  
+**Venue**: NeurIPS  
+**arXiv**: [2006.11239](https://arxiv.org/abs/2006.11239)
+
+## Overview
+
+Diffusion models have emerged as a powerful class of generative models, rivaling and often surpassing GANs in image quality. They work by gradually adding noise to data and learning to reverse this process.
+
+## The Core Idea
+
+The key insight is to:
+
+1. **Forward process**: Gradually add Gaussian noise to data over $T$ steps
+2. **Reverse process**: Learn to denoise, starting from pure noise
+
+This is inspired by non-equilibrium thermodynamics!
+
+## Mathematical Framework
+
+### Forward Diffusion Process
+
+The forward process is a Markov chain that gradually adds noise:
+
+$$
+q(x_t | x_{t-1}) = \mathcal{N}(x_t; \sqrt{1-\beta_t}x_{t-1}, \beta_t I)
+$$
+
+Where $\beta_t$ is a variance schedule. We can sample $x_t$ directly from $x_0$:
+
+$$
+x_t = \sqrt{\bar{\alpha}_t}x_0 + \sqrt{1-\bar{\alpha}_t}\epsilon, \quad \epsilon \sim \mathcal{N}(0, I)
+$$
+
+Where $\bar{\alpha}_t = \prod_{s=1}^t (1-\beta_s)$.
+
+### Reverse Process
+
+The reverse process is also Markovian:
+
+$$
+p_\theta(x_{t-1} | x_t) = \mathcal{N}(x_{t-1}; \mu_\theta(x_t, t), \Sigma_\theta(x_t, t))
+$$
+
+The model learns to predict the mean $\mu_\theta$ (and optionally variance).
+
+### Training Objective
+
+The simplified training objective is:
+
+$$
+L_{simple} = \mathbb{E}_{t, x_0, \epsilon}\left[\|\epsilon - \epsilon_\theta(x_t, t)\|^2\right]
+$$
+
+Remarkably simple: predict the noise that was added!
+
+## Implementation
+
+Here's a simplified implementation in PyTorch:
+
+```python
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class DiffusionModel(nn.Module):
+    def __init__(self, model, timesteps=1000):
+        super().__init__()
+        self.model = model  # U-Net or similar
+        self.timesteps = timesteps
+        
+        # Define beta schedule (linear)
+        self.betas = torch.linspace(1e-4, 0.02, timesteps)
+        self.alphas = 1 - self.betas
+        self.alphas_cumprod = torch.cumprod(self.alphas, dim=0)
+    
+    def forward_diffusion(self, x0, t, noise=None):
+        """Add noise to x0 at timestep t"""
+        if noise is None:
+            noise = torch.randn_like(x0)
+        
+        sqrt_alphas_cumprod_t = self.alphas_cumprod[t].sqrt().view(-1, 1, 1, 1)
+        sqrt_one_minus_alphas_cumprod_t = (1 - self.alphas_cumprod[t]).sqrt().view(-1, 1, 1, 1)
+        
+        # x_t = sqrt(alpha_bar_t) * x_0 + sqrt(1 - alpha_bar_t) * epsilon
+        return sqrt_alphas_cumprod_t * x0 + sqrt_one_minus_alphas_cumprod_t * noise
+    
+    def training_step(self, x0):
+        """Single training step"""
+        batch_size = x0.shape[0]
+        
+        # Sample random timesteps
+        t = torch.randint(0, self.timesteps, (batch_size,), device=x0.device)
+        
+        # Sample noise
+        noise = torch.randn_like(x0)
+        
+        # Forward diffusion
+        x_t = self.forward_diffusion(x0, t, noise)
+        
+        # Predict noise
+        noise_pred = self.model(x_t, t)
+        
+        # Compute loss
+        loss = F.mse_loss(noise_pred, noise)
+        
+        return loss
+    
+    @torch.no_grad()
+    def sample(self, shape):
+        """Generate samples by reversing diffusion"""
+        device = next(self.parameters()).device
+        
+        # Start from pure noise
+        x = torch.randn(shape, device=device)
+        
+        # Reverse diffusion process
+        for t in reversed(range(self.timesteps)):
+            t_batch = torch.full((shape[0],), t, device=device, dtype=torch.long)
+            
+            # Predict noise
+            predicted_noise = self.model(x, t_batch)
+            
+            # Compute coefficients
+            alpha_t = self.alphas[t]
+            alpha_cumprod_t = self.alphas_cumprod[t]
+            beta_t = self.betas[t]
+            
+            # Reverse step
+            if t > 0:
+                noise = torch.randn_like(x)
+            else:
+                noise = torch.zeros_like(x)
+            
+            # Denoise
+            x = (1 / alpha_t.sqrt()) * (
+                x - ((1 - alpha_t) / (1 - alpha_cumprod_t).sqrt()) * predicted_noise
+            ) + beta_t.sqrt() * noise
+        
+        return x
+
+# Example U-Net backbone (simplified)
+class SimpleUNet(nn.Module):
+    def __init__(self, in_channels=3, out_channels=3, base_dim=64):
+        super().__init__()
+        
+        # Time embedding
+        self.time_embedding = nn.Sequential(
+            nn.Linear(1, base_dim),
+            nn.SiLU(),
+            nn.Linear(base_dim, base_dim)
+        )
+        
+        # Encoder
+        self.enc1 = nn.Conv2d(in_channels, base_dim, 3, padding=1)
+        self.enc2 = nn.Conv2d(base_dim, base_dim * 2, 3, padding=1, stride=2)
+        
+        # Decoder
+        self.dec1 = nn.ConvTranspose2d(base_dim * 2, base_dim, 4, stride=2, padding=1)
+        self.dec2 = nn.Conv2d(base_dim, out_channels, 3, padding=1)
+    
+    def forward(self, x, t):
+        # Embed time
+        t_emb = self.time_embedding(t.float().unsqueeze(-1))
+        
+        # Encode
+        h1 = F.silu(self.enc1(x))
+        h2 = F.silu(self.enc2(h1))
+        
+        # Add time embedding
+        h2 = h2 + t_emb.view(-1, h2.shape[1], 1, 1)
+        
+        # Decode
+        h3 = F.silu(self.dec1(h2))
+        out = self.dec2(h3)
+        
+        return out
+
+# Usage
+model = SimpleUNet()
+diffusion = DiffusionModel(model, timesteps=1000)
+
+# Training
+optimizer = torch.optim.Adam(diffusion.parameters(), lr=1e-4)
+for epoch in range(num_epochs):
+    for batch in dataloader:
+        loss = diffusion.training_step(batch)
+        loss.backward()
+        optimizer.step()
+        optimizer.zero_grad()
+
+# Sampling
+samples = diffusion.sample((16, 3, 64, 64))
+```
+
+## Key Insights
+
+1. **Noise prediction is easier**: Predicting noise is more stable than directly predicting denoised images
+2. **Variance schedule matters**: Choice of $\beta_t$ significantly affects quality
+3. **Classifier-free guidance**: Can guide generation without a separate classifier
+4. **Connects to score matching**: Equivalent to learning the score function $\nabla_x \log p(x)$
+
+## Comparison to Other Generative Models
+
+| Aspect | Diffusion | GANs | VAEs | Normalizing Flows |
+|--------|-----------|------|------|-------------------|
+| **Sample Quality** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ |
+| **Training Stability** | ⭐⭐⭐⭐⭐ | ⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| **Sampling Speed** | ⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| **Likelihood** | ❌ | ❌ | ✅ | ✅ |
+
+## Applications
+
+Diffusion models have been successfully applied to:
+
+- **Image Generation**: DALL-E 2, Stable Diffusion, Imagen
+- **Video Generation**: Make-A-Video, Imagen Video
+- **Audio**: WaveGrad, DiffWave
+- **3D**: DreamFusion
+- **Molecular Design**: Diffusion models for drug discovery
+
+## Future Directions
+
+Active research areas include:
+
+1. **Faster sampling**: Reducing the number of steps needed
+2. **Continuous time**: Moving beyond discrete timesteps
+3. **Conditional generation**: Better control over generated content
+4. **Inverse problems**: Using diffusion for image restoration, super-resolution
+
+## Conclusion
+
+Diffusion models represent a major breakthrough in generative modeling. Their training stability, sample quality, and theoretical grounding make them a powerful tool in the modern ML toolkit.
+
+The key takeaway: Sometimes adding noise and learning to remove it is the path to creation!
+
+## References
+
+1. Ho et al. "Denoising Diffusion Probabilistic Models." NeurIPS 2020.
+2. Song et al. "Score-Based Generative Modeling through Stochastic Differential Equations." ICLR 2021.
+3. Dhariwal & Nichol. "Diffusion Models Beat GANs on Image Synthesis." NeurIPS 2021.
+
+---
+
+*Interested in implementing diffusion models? Have questions about the math? Let's discuss!*
+
