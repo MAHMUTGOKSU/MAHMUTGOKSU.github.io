@@ -12,8 +12,11 @@ export default async function Home() {
         <h1 className="text-6xl font-bold mb-8 bg-gradient-to-r from-primary-400 to-secondary-500 bg-clip-text text-transparent">
           Welcome !
         </h1>
-        <p className="text-lg max-w-3xl mx-auto mb-8 text-gray-700 dark:text-gray-300 leading-relaxed text-left">
-          This is my page where you will see my projects and paper reviews. The aim of this page is not for me to show myself to the world but to help me get motivated, to learn, build and explore new ideas. I love reading papers and I enjoy talking about them more. I have been struggling to talk to people so I came up with this idea: If I wrote about them they would stay with me forever. Every week I will be writing a review on a paper of my choosing, most probably relevant to what I am working on, and discuss the idea. The main goal is not to get everything correct but to understand as well as I can and communicate it to you reader (or me :). The content will not be AI generated in any way because I value my understanding and AI does not help that much for my case. LETS GET STARTED...
+        <p className="text-lg max-w-3xl mx-auto mb-6 text-gray-700 dark:text-gray-300 leading-relaxed text-left">
+          This is my page where you will see my projects and paper reviews. The aim of this page is not for me to show myself to the world but to help me get motivated, to learn, build and explore new ideas. I love reading papers and I enjoy talking about them more. I have been struggling to talk to people so I came up with this idea: If I wrote about them they would stay with me forever. Every week I will be writing a review on a paper of my choosing, most probably relevant to what I am working on, and discuss the idea. The main goal is not to get everything correct but to understand as well as I can and communicate it to you reader (or me :). The content will not be AI generated in any way because I value my understanding and AI does not help that much for my case.
+        </p>
+        <p className="text-3xl font-bold bg-gradient-to-r from-primary-400 to-secondary-500 bg-clip-text text-transparent max-w-3xl mx-auto mb-8 text-center">
+          LETS GET STARTED...
         </p>
         <div className="flex justify-center">
           <Link
@@ -25,10 +28,10 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Featured Projects */}
+      {/* Projects */}
       <section>
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-3xl font-bold text-secondary-800 dark:text-secondary-200">Featured Projects</h2>
+          <h2 className="text-3xl font-bold text-secondary-800 dark:text-secondary-200">Projects</h2>
           <Link href="/projects" className="text-primary-500 hover:text-primary-600 font-semibold hover:underline">
             View all →
           </Link>
