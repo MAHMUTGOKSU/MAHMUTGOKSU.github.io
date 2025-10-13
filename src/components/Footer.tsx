@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-6 max-w-5xl">
         <div className="flex justify-between items-center">
           <p className="text-gray-600 dark:text-gray-400">
-            © {new Date().getFullYear()} Mahmut Zahid Göksu. All rights reserved.
+            © {new Date().getFullYear()} Mahmut Zahid Göksu
           </p>
           <div className="flex gap-6">
             <a
