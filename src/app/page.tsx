@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { getAllPosts } from "@/src/lib/mdx";
+import BouncingBalls from "@/src/components/BouncingBalls";
 
 export default async function Home() {
   const projects = await getAllPosts("projects");
   const papers = await getAllPosts("papers");
+  const ballCount = 5 + (projects?.length || 0) + (papers?.length || 0);
 
   return (
     <div className="space-y-12">
@@ -15,9 +17,11 @@ export default async function Home() {
         <p className="text-lg max-w-3xl mx-auto mb-6 text-gray-700 dark:text-gray-300 leading-relaxed text-left">
           This is my page where you will see my projects and paper reviews. The aim of this page is not for me to show myself to the world but to help me get motivated, to learn, build and explore new ideas. I love reading papers and I enjoy talking about them more. I have been struggling to talk to people so I came up with this idea: If I wrote about them they would stay with me forever. Every week I will be writing a review on a paper of my choosing, most probably relevant to what I am working on, and discuss the idea. The main goal is not to get everything correct but to understand as well as I can and communicate it to you reader ( or me :) ) . The content will not be AI generated in any way because I value my understanding and AI does not help that much for my case.
         </p>
-        <p className="text-3xl font-bold bg-gradient-to-r from-primary-400 to-secondary-500 bg-clip-text text-transparent max-w-3xl mx-auto mb-8 text-center">
+        <p className="text-3xl font-bold bg-gradient-to-r from-primary-400 to-secondary-500 bg-clip-text text-transparent max-w-3xl mx-auto mb-4 text-center">
           LETS GET STARTED...
         </p>
+        {/* Bounded box with bouncing balls */}
+        <BouncingBalls count={ballCount} />
         <div className="flex justify-center">
           <Link
             href="/about"

@@ -6,10 +6,40 @@
 @import 'katex/dist/katex.min.css';
 
 :root {
+  /* Primary Colors (Yellow) */
+  --primary-50: #fffef5;
+  --primary-100: #fffce0;
+  --primary-200: #fff9c2;
+  --primary-300: #fff494;
+  --primary-400: #fcde44;
+  --primary-500: #f5d12d;
+  --primary-600: #e8c01f;
+  --primary-700: #d4a615;
+  --primary-800: #b58a12;
+  --primary-900: #8a6610;
+
+  /* Secondary Colors (Purple) */
+  --secondary-50: #f5f3ff;
+  --secondary-100: #ede9fe;
+  --secondary-200: #ddd6fe;
+  --secondary-300: #c4b5fd;
+  --secondary-400: #a78bfa;
+  --secondary-500: #8b5cf6;
+  --secondary-600: #7c3aed;
+  --secondary-700: #6d28d9;
+  --secondary-800: #5b21b6;
+  --secondary-900: #4c1d95;
+  --secondary-950: #2e1065;
+
+  /* Dark Theme Colors */
+  --dark: #070012;
+  --dark-lighter: #0f0524;
+  --dark-darker: #000000;
+
+  /* Semantic Colors */
   --foreground: #070012;
   --background: #ffffff;
   --accent: #fcde44;
-  --purple: #070012;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,7 +47,6 @@
     --foreground: #fffce0;
     --background: #070012;
     --accent: #fcde44;
-    --purple: #070012;
   }
 }
 
@@ -40,22 +69,22 @@ code {
 
 /* Override prism colors for our theme */
 .prism-code {
-  background-color: #0f0524 !important;
+  background-color: var(--dark-lighter) !important;
 }
 
 pre[class*="language-"] {
-  background: #0f0524;
+  background: var(--dark-lighter);
 }
 
 .token.keyword {
-  color: #fcde44 !important;
+  color: var(--primary-400) !important;
 }
 
 .token.function {
-  color: #a78bfa !important;
+  color: var(--secondary-400) !important;
 }
 
 .token.string {
-  color: #fff494 !important;
+  color: var(--primary-300) !important;
 }
 
