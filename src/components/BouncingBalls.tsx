@@ -17,11 +17,14 @@ export default function BouncingBalls({ count = 5 }: { count?: number }) {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const container = containerRef.current;
-    if (!canvas || !container) return;
+    const containerEl = containerRef.current;
+    if (!canvas || !containerEl) return;
+    const canvasEl = canvas as HTMLCanvasElement;
+    const container = containerEl as HTMLDivElement;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvasEl.getContext("2d");
     if (!ctx) return;
+    const context = ctx as CanvasRenderingContext2D;
 
     let animationFrameId = 0;
     let lastTs = performance.now();
@@ -33,11 +36,11 @@ export default function BouncingBalls({ count = 5 }: { count?: number }) {
       const rect = container.getBoundingClientRect();
       const width = Math.max(100, rect.width);
       const height = Math.max(100, rect.height);
-      canvas.width = Math.floor(width * DPR);
-      canvas.height = Math.floor(height * DPR);
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      canvasEl.width = Math.floor(width * DPR);
+      canvasEl.height = Math.floor(height * DPR);
+      canvasEl.style.width = `${width}px`;
+      canvasEl.style.height = `${height}px`;
+      context.setTransform(DPR, 0, 0, DPR, 0, 0);
     }
 
     resize();
@@ -85,10 +88,10 @@ export default function BouncingBalls({ count = 5 }: { count?: number }) {
       const dtSec = Math.min(0.033, (now - lastTs) / 1000); // cap dt to avoid jumps
       lastTs = now;
 
-      const width = canvas.width / DPR;
-      const height = canvas.height / DPR;
+      const width = canvasEl.width / DPR;
+      const height = canvasEl.height / DPR;
 
-      ctx.clearRect(0, 0, width, height);
+      context.clearRect(0, 0, width, height);
 
       // Determine phase transition
       if (!randomPhase) {
@@ -211,10 +214,10 @@ export default function BouncingBalls({ count = 5 }: { count?: number }) {
 
       // Draw
       for (let b of balls) {
-        ctx.beginPath();
-        ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
-        ctx.fillStyle = b.color;
-        ctx.fill();
+        context.beginPath();
+        context.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+        context.fillStyle = b.color;
+        context.fill();
       }
 
       animationFrameId = requestAnimationFrame(step);
