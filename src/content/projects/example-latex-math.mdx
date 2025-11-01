@@ -1,0 +1,175 @@
+---
+title: "Understanding Transformers: The Math Behind Attention"
+date: "2024-01-15"
+description: "Deep dive into the mathematical foundations of the Transformer architecture with detailed LaTeX equations"
+tags: ["deep-learning", "nlp", "transformers", "mathematics"]
+github: ""
+demo: ""
+---
+
+# Understanding Transformers: The Math Behind Attention
+
+This project explores the mathematical foundations of the Transformer architecture, breaking down each component with detailed equations.
+
+## Scaled Dot-Product Attention
+
+The core mechanism of transformers is the attention function. Given queries $Q$, keys $K$, and values $V$, the attention is computed as:
+
+$$
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+$$
+
+Where:
+- $Q \in \mathbb{R}^{n \times d_k}$ are the queries
+- $K \in \mathbb{R}^{m \times d_k}$ are the keys  
+- $V \in \mathbb{R}^{m \times d_v}$ are the values
+- $d_k$ is the dimension of the keys (scaling factor)
+
+### Why Scale by $\sqrt{d_k}$?
+
+For large values of $d_k$, the dot products grow large in magnitude, pushing the softmax function into regions with extremely small gradients. Scaling by $\sqrt{d_k}$ prevents this:
+
+$$
+\text{Var}(q \cdot k) = d_k \quad \Rightarrow \quad \text{Var}\left(\frac{q \cdot k}{\sqrt{d_k}}\right) = 1
+$$
+
+## Multi-Head Attention
+
+Instead of performing a single attention function, multi-head attention projects $Q$, $K$, and $V$ into $h$ different learned linear projections:
+
+$$
+\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \ldots, \text{head}_h)W^O
+$$
+
+Where each head is computed as:
+
+$$
+\text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V)
+$$
+
+Parameter matrices:
+- $W_i^Q \in \mathbb{R}^{d_{\text{model}} \times d_k}$
+- $W_i^K \in \mathbb{R}^{d_{\text{model}} \times d_k}$  
+- $W_i^V \in \mathbb{R}^{d_{\text{model}} \times d_v}$
+- $W^O \in \mathbb{R}^{hd_v \times d_{\text{model}}}$
+
+## Position-wise Feed-Forward Networks
+
+Each layer contains a fully connected feed-forward network applied to each position separately:
+
+$$
+\text{FFN}(x) = \max(0, xW_1 + b_1)W_2 + b_2
+$$
+
+This is equivalent to two linear transformations with a ReLU activation:
+
+$$
+\text{FFN}(x) = \text{ReLU}(xW_1 + b_1)W_2 + b_2
+$$
+
+## Positional Encoding
+
+Since transformers have no recurrence or convolution, we inject positional information using sinusoidal functions:
+
+$$
+\begin{align}
+PE_{(pos, 2i)} &= \sin\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right) \\
+PE_{(pos, 2i+1)} &= \cos\left(\frac{pos}{10000^{2i/d_{\text{model}}}}\right)
+\end{align}
+$$
+
+Where:
+- $pos$ is the position in the sequence
+- $i$ is the dimension index
+- $d_{\text{model}}$ is the model dimension
+
+## Layer Normalization
+
+Applied before each sub-layer (Pre-LN variant):
+
+$$
+\text{LayerNorm}(x) = \gamma \odot \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta
+$$
+
+Where:
+- $\mu = \frac{1}{d}\sum_{i=1}^d x_i$ (mean)
+- $\sigma^2 = \frac{1}{d}\sum_{i=1}^d (x_i - \mu)^2$ (variance)
+- $\gamma, \beta$ are learned parameters
+- $\epsilon$ is a small constant for numerical stability
+
+## Complete Encoder Layer
+
+The full encoder layer combines these components:
+
+$$
+\begin{align}
+\text{Input} &: x \\
+\text{Self-Attention} &: z = x + \text{MultiHead}(\text{LN}(x), \text{LN}(x), \text{LN}(x)) \\
+\text{Output} &: z' = z + \text{FFN}(\text{LN}(z))
+\end{align}
+$$
+
+## Training Objective
+
+For language modeling, we minimize the cross-entropy loss:
+
+$$
+\mathcal{L} = -\sum_{t=1}^T \log P(x_t | x_{<t})
+$$
+
+With label smoothing:
+
+$$
+\mathcal{L}_{\text{smooth}} = (1 - \epsilon) \mathcal{L} + \epsilon \cdot \frac{1}{V}
+$$
+
+Where $V$ is the vocabulary size and $\epsilon$ is the smoothing parameter.
+
+## Computational Complexity
+
+The complexity of self-attention with sequence length $n$ and dimension $d$:
+
+| Layer Type | Complexity | Sequential Ops | Max Path Length |
+|-----------|-----------|----------------|----------------|
+| Self-Attention | $O(n^2 \cdot d)$ | $O(1)$ | $O(1)$ |
+| Recurrent | $O(n \cdot d^2)$ | $O(n)$ | $O(n)$ |
+| Convolutional | $O(k \cdot n \cdot d^2)$ | $O(1)$ | $O(\log_k(n))$ |
+
+## Implementation Notes
+
+Key hyperparameters from "Attention Is All You Need":
+
+- $d_{\text{model}} = 512$ (model dimension)
+- $h = 8$ (number of attention heads)
+- $d_k = d_v = 64$ (per-head dimensions)
+- $d_{ff} = 2048$ (FFN inner dimension)
+- $P_{drop} = 0.1$ (dropout rate)
+
+## Gradient Flow
+
+One key advantage: attention allows gradients to flow directly through the network, avoiding the vanishing gradient problem in RNNs.
+
+For a path from position $i$ to position $j$:
+
+$$
+\frac{\partial L}{\partial x_i} \propto \frac{\partial L}{\partial x_j} \cdot \text{attention}_{ji}
+$$
+
+This direct connection enables better gradient flow across long sequences.
+
+## Conclusion
+
+The Transformer architecture's power comes from:
+1. **Parallelization**: All positions computed simultaneously
+2. **Long-range dependencies**: Direct connections via attention
+3. **Flexible receptive field**: Learned attention weights
+4. **Strong gradient flow**: Shorter paths between distant positions
+
+These mathematical properties make transformers the foundation of modern NLP models like GPT, BERT, and T5.
+
+## References
+
+- Vaswani et al., "Attention Is All You Need" (2017)
+- The Illustrated Transformer by Jay Alammar
+- [Original Paper](https://arxiv.org/abs/1706.03762)
+
