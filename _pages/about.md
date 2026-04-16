@@ -10,11 +10,13 @@ redirect_from:
 
 <span class='anchor' id='about-me'></span>
 
-Hi! I'm **Mahmut Zahid Göksu**, a Machine Learning Engineer working at **NewMind AI** on large language models for the Turkish legal domain — pre-training ModernBERT and Qwen3 models on multi-node GPU clusters, building Turkish-aware tokenization, and serving LLMs with dynamic LoRA adapters.
+Hi! I'm **Mahmut Zahid Göksu**, a Machine Learning Engineer at **NewMind AI** in Istanbul. Right now I'm working on the **AI Factory** project, where I design and run **large-scale data pipelines on the [MareNostrum5](https://www.bsc.es/marenostrum/marenostrum-5) supercomputer** — curating and transforming terabyte-scale Turkish corpora, orchestrating synthetic data generation, and running large-scale classification across thousands of GPUs with vLLM and TensorRT-LLM. The scale is genuinely exciting: getting data to flow cleanly through a cluster that size is its own research problem, and I love every bit of it.
 
-I graduated with a **B.Sc. in Computer Engineering** from **Koç University** in Istanbul (June 2025, GPA 3.5/4.0). My coursework and course projects focused on machine learning, deep learning, computer vision, reinforcement learning, and deep unsupervised learning.
+Beyond data engineering, I pre-train **ModernBERT** and continually pre-train **Qwen3** models for the Turkish legal domain, and I build the serving stack that carries those models into production — including a microservice that swaps LoRA adapters on the fly via LoRAX for multi-tenant deployments.
 
-My interests include **LLM pre-training & tokenization**, **mechanistic interpretability**, **multi-modal learning**, and **reinforcement learning**.
+What drives me isn't just training models — it's **putting them to work in the real world**. A model that only lives inside a benchmark doesn't interest me nearly as much as one that touches users, informs a decision, or quietly speeds someone's workflow. I care about the full arc: from raw, messy data, through pre-training and post-training, to a service responding to a real request.
+
+I graduated with a **B.Sc. in Computer Engineering** from **Koç University** in Istanbul (June 2025, GPA 3.5/4.0), where my research interests crystallized around **LLM pre-training & tokenization**, **mechanistic interpretability**, **multi-modal learning**, and **reinforcement learning**.
 
 You can grab my [CV / resume](files/mahmutgoksu-resume.pdf).
 
