@@ -10,50 +10,78 @@ redirect_from:
 
 <span class='anchor' id='about-me'></span>
 
-Hi! I'm **Mahmut Zahid Göksu**, a Machine Learning Engineer passionate about deep learning, natural language processing, and computer vision. I love building practical AI solutions and diving deep into research.
+Hi! I'm **Mahmut Zahid Göksu**, a Machine Learning Engineer working at **NewMind AI** on large language models for the Turkish legal domain — pre-training ModernBERT and Qwen3 models on multi-node GPU clusters, building Turkish-aware tokenization, and serving LLMs with dynamic LoRA adapters.
 
-I'm pursuing my Bachelor's degree in **Computer Engineering** at **Koç University** in Istanbul, Turkey. My coursework spans machine learning, deep learning, computer vision, reinforcement learning, and deep unsupervised learning.
+I graduated with a **B.Sc. in Computer Engineering** from **Koç University** in Istanbul (June 2025, GPA 3.5/4.0). My coursework and course projects focused on machine learning, deep learning, computer vision, reinforcement learning, and deep unsupervised learning.
 
-My research interests include **large language models & tokenization**, **computer vision and multi-modal learning**, **reinforcement learning**, and **model interpretability**.
+My interests include **LLM pre-training & tokenization**, **mechanistic interpretability**, **multi-modal learning**, and **reinforcement learning**.
 
 You can grab my [CV / resume](files/mahmutgoksu-resume.pdf).
 
 
 # 💻 Experience
 
-- *Aug 2024 – Present*, **ML Engineer**, [NewMind AI](https://newmind.ai/), Istanbul, Turkey.
-  - Engineered a custom tokenization pipeline using morphologically-aware Byte-Pair Encoding (BPE).
-  - Pre-trained BERT and RoBERTa models using the Nvidia NEMO Framework.
-  - Built a microservice for serving LLMs with dynamic LoRA adapters via Lorax.
+- *Aug 2025 – Present*, **Machine Learning Engineer**, [NewMind AI](https://newmind.ai/), Istanbul, Turkey.
+  - Pre-trained two **ModernBERT** models (base and large) from scratch on a multi-node GPU cluster for Turkish legal-domain retrieval, achieving state-of-the-art performance on legal retrieval benchmarks against leading open-source baselines.
+  - Performed continual pre-training of **Qwen3** models in a multi-node distributed setup to adapt them to the Turkish legal domain, improving downstream task performance on domain-specific language understanding.
+  - Post-trained ModernBERT using contrastive learning on synthetically generated query–document pairs, substantially improving retrieval quality on legal corpora.
+  - Curated large-scale pre-training datasets from web crawls and internal sources; designed data-cleaning pipelines to correct OCR artifacts and normalize noisy Turkish text at scale.
+  - Designed and implemented a custom Byte-Pair Encoding (BPE) tokenizer with morphology-aware merging rules tailored to Turkish legal text, improving subword segmentation over standard tokenizers.
+  - Built distributed data pipelines on the **MareNostrum5** supercomputer for the ontological layer of NewMind's systems, including synthetic data generation and large-scale classification using **vLLM** and **TensorRT-LLM**.
+  - Developed a microservice for serving LLMs with dynamic LoRA adapter loading via **LoRAX**, enabling efficient multi-tenant model serving.
 
 - *Jun 2024 – Sep 2024*, **Research Intern**, TÜBİTAK BİLGEM, Kocaeli, Turkey.
-  - Differential cryptanalysis on DES systems (4, 6, and 8 rounds).
-  - Studied authentication protocols (Kerberos, Needham–Schroeder, Woo–Lam).
-  - Explored TLS/SSL versions and their guarantees.
+  - Implemented differential cryptanalysis attacks on 4-, 6-, and 8-round DES, recovering round keys and validating theoretical complexity bounds.
+  - Presented research on differential cryptanalysis of DES-like systems to the research team.
+  - Surveyed authentication protocols (Kerberos, Needham–Schroeder, Woo–Lam) and TLS/SSL versions, and prepared technical presentations on their security guarantees and known vulnerabilities.
 
-- *Jul 2023 – Sep 2023*, **ML Engineering Intern**, [NewMind AI](https://newmind.ai/), Istanbul, Turkey.
-  - Built a recommendation system using collaborative filtering on user-interaction logs.
-  - Implemented a graph database with Neo4j and experimented with node embedding algorithms.
-  - Presented research on node embedding methods.
+- *Jul 2023 – Sep 2023*, **Machine Learning Engineering Intern**, [NewMind AI](https://newmind.ai/), Istanbul, Turkey.
+  - Engineered a recommendation system using collaborative filtering on user-interaction logs to generate tailored content suggestions.
+  - Built a graph database in Neo4j and implemented node embedding algorithms for a node-prediction task.
+  - Researched and presented several node embedding algorithms, comparing their assumptions, trade-offs, and suitability for the target use case.
 
-- *Mar 2023 – Apr 2023*, **ML Engineering Intern**, [QCRI – Qatar Computing Research Institute](https://www.hbku.edu.qa/en/qcri), Doha, Qatar.
-  - Trained an offensive-language detection model on Twitter data.
-  - Contributed to an NLP-based content-moderation system.
+- *Mar 2023 – Apr 2023*, **Machine Learning Engineering Intern**, [QCRI – Qatar Computing Research Institute](https://www.hbku.edu.qa/en/qcri), Doha, Qatar.
+  - Built offensive-language detection models for Turkish Twitter data, training classical baselines (SVM, logistic regression) with scikit-learn alongside a BERT-based classifier in Keras.
+  - Worked with both public corpora and internal QCRI Turkish Twitter datasets, comparing classical and transformer-based approaches to inform a content-moderation pipeline.
 
 - *Jul 2022 – Aug 2022*, **Software Engineering Intern**, [NewMind AI](https://newmind.ai/), Istanbul, Turkey.
-  - Object detection for CAPTCHA solving in a web-scraping pipeline.
-  - Speech-to-text for meeting transcription.
+  - Developed an object detection model for solving CAPTCHAs in a web-scraping pipeline.
+  - Implemented a speech-to-text system for meeting-recording transcription.
+
+
+# 🧪 Projects
+
+- **Mechanistic Interpretability of Multimodal LLMs** — *COMP447 Course Project*
+  - Implemented a **logit lens** on Gemma3-4B to project intermediate hidden states onto the unembedding space, revealing layer-wise shifts from uninterpretable early representations to semantically meaningful per-patch features in later layers.
+  - Trained a **Top-K sparse autoencoder** (k=128, 16× expansion to 40,960 features) on Gemma3's layer-6 MLP activations using 5.8M tokens from GQA, achieving 98.5% explained variance and 95% cosine similarity on reconstructions.
+  - Designed an automated LLM-driven ablation pipeline that zeros top-activating latents per token and analyzes output shifts to surface candidate monosemantic features.
+  - Explored circuit tracing with transcoders on LLaMA-3.2-1B for VQA — among the first attempts at transcoder-based circuit tracing in a multimodal setting.
+
+- **Touch-Vision-Language Model for Textile Classification** — *COMP441 Course Project*
+  - Fine-tuned the Touch-Vision-Language (TVL) multimodal model on the TextileNet dataset using LoRA, adapting a LLaMA-2-based architecture for fiber and fabric classification across 60 material categories.
+  - Curated a custom instruction-tuning dataset of question–answer pairs across 10 prompt templates to convert TextileNet labels into conversational supervision.
+  - Converted the generative model into a classifier via sentence-embedding similarity matching, achieving **54.2% top-1 on fiber** and **76.4% top-1 on fabric**, outperforming ResNet-50 and ViT baselines by 5–11 points.
+
+- **Monocular Depth Estimation for Martian Terrain** — *COMP411 Course Project*
+  - Generated a synthetic Mars-surface dataset using **Unreal Engine 5** with raw depth-buffer ground truth exported as EXR, simulating rover-perspective navigation footage.
+  - Fine-tuned **Marigold**, a latent-diffusion monocular depth estimator, on the synthetic Mars dataset; benchmarked zero-shot and fine-tuned variants against Depth Anything V2, Depth Pro, and DepthCrafter using F1, AbsRel, and δ₁.
+
+- **Mangalagent — Reinforcement Learning for Mangala** — *COMP438 Course Project*
+  - Developed RL agents for **Mangala**, a Turkish Mancala-family strategy game, achieving a **74–77% win rate** against a random baseline when moving first.
+  - Implemented a TD-Gammon-style agent with a four-layer value network, depth-5 minimax look-ahead, and an experience-replay buffer.
+  - Built an AlphaZero-style Monte Carlo Tree Search with PUCT selection and trained policy/value networks via REINFORCE on self-play trajectories.
 
 
 # 📖 Education
 
-- *Sep 2021 – Present*, **B.Sc. in Computer Engineering**, Koç University, Istanbul, Turkey.
-  - Relevant coursework: Operating Systems (COMP304), Machine Learning (COMP421), Artificial Intelligence (COMP341), Deep Learning (COMP441), Computer Vision with Deep Learning (COMP411), Reinforcement Learning (COMP438), Deep Unsupervised Learning (COMP447).
+- *Sep 2021 – Jun 2025*, **B.Sc. in Computer Engineering**, Koç University, Istanbul, Turkey. GPA: 3.5 / 4.0.
+  - Relevant coursework: Machine Learning (COMP421), Deep Learning (COMP441), Computer Vision with Deep Learning (COMP411), Reinforcement Learning (COMP438), Deep Unsupervised Learning (COMP447), Artificial Intelligence (COMP341), Operating Systems (COMP304).
 
 
 # 🛠 Skills
 
 - **Programming Languages**: Python, C, C++, Java, Scheme.
-- **ML / AI**: PyTorch, Scikit-Learn, Nvidia NEMO Framework, Transformers.
-- **Tools**: Git, Docker, Elasticsearch, Neo4j, Singularity.
-- **Spoken Languages**: English (Native), Turkish (Native).
+- **ML / AI Frameworks**: PyTorch, Hugging Face Transformers, scikit-learn, Keras, Nvidia NeMo.
+- **LLM Training & Serving**: vLLM, TensorRT-LLM, LoRAX, LoRA / PEFT, FSDP, DeepSpeed.
+- **Infrastructure & Tools**: Git, Docker, SLURM, Singularity, Elasticsearch, Neo4j.
+- **Spoken Languages**: English (Native), Turkish (Native); IELTS 7.0 / 9.0.
