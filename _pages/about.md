@@ -26,12 +26,12 @@ You can grab my [CV / resume](files/mahmutgoksu-resume.pdf).
 # 💻 Experience
 
 - *Aug 2025 – Present*, **Machine Learning Engineer**, [NewMind AI](https://newmind.ai/), Istanbul, Turkey.
-  - Pre-trained two **ModernBERT** models (base and large) from scratch on a multi-node GPU cluster for Turkish legal-domain retrieval, achieving state-of-the-art performance on legal retrieval benchmarks against leading open-source baselines.
-  - Performed continual pre-training of **Qwen3** models in a multi-node distributed setup to adapt them to the Turkish legal domain, improving downstream task performance on domain-specific language understanding.
+  - Pre-trained two **ModernBERT** models (base and large, 155M / 403M params) from scratch on a multi-node GPU cluster for Turkish legal-domain retrieval, scoring 47.52 / 46.42 legal and 50.07 / 51.59 nDCG@10 — ranking **#1 and #2 among Turkish retrieval encoders** (+3.7 pts over the best prior Turkish baseline) and competitive with larger multilingual models such as bge-m3 (567M) and Google's embeddinggemma (307M).
   - Post-trained ModernBERT using contrastive learning on synthetically generated query–document pairs, substantially improving retrieval quality on legal corpora.
-  - Curated large-scale pre-training datasets from web crawls and internal sources; designed data-cleaning pipelines to correct OCR artifacts and normalize noisy Turkish text at scale.
+  - Worked in NewMind's **AI Factory** on the **MareNostrum5** supercomputer, building large-scale data processing pipelines spanning synthetic data generation and data extraction that power the ontological layer of NewMind's systems, with LLM inference served across multi-node deployments via vLLM and TensorRT-LLM.
+  - Performed continual pre-training of **Qwen3** models in a multi-node distributed setup to adapt them to the Turkish legal domain, improving downstream task performance on domain-specific language understanding.
   - Designed and implemented a custom Byte-Pair Encoding (BPE) tokenizer with morphology-aware merging rules tailored to Turkish legal text, improving subword segmentation over standard tokenizers.
-  - Built distributed data pipelines on the **MareNostrum5** supercomputer for the ontological layer of NewMind's systems, including synthetic data generation and large-scale classification using **vLLM** and **TensorRT-LLM**.
+  - Curated large-scale pre-training datasets from web crawls and internal sources; designed data-cleaning pipelines to correct OCR artifacts and normalize noisy Turkish text at scale.
   - Developed a microservice for serving LLMs with dynamic LoRA adapter loading via **LoRAX**, enabling efficient multi-tenant model serving.
 
 - *Jun 2024 – Sep 2024*, **Research Intern**, TÜBİTAK BİLGEM, Kocaeli, Turkey.
@@ -42,15 +42,13 @@ You can grab my [CV / resume](files/mahmutgoksu-resume.pdf).
 - *Jul 2023 – Sep 2023*, **Machine Learning Engineering Intern**, [NewMind AI](https://newmind.ai/), Istanbul, Turkey.
   - Engineered a recommendation system using collaborative filtering on user-interaction logs to generate tailored content suggestions.
   - Built a graph database in Neo4j and implemented node embedding algorithms for a node-prediction task.
-  - Researched and presented several node embedding algorithms, comparing their assumptions, trade-offs, and suitability for the target use case.
+  - Researched and presented several node embedding methods, including GraphSAGE and node2vec, comparing their assumptions, trade-offs, and suitability for the target use case.
 
 - *Mar 2023 – Apr 2023*, **Machine Learning Engineering Intern**, [QCRI – Qatar Computing Research Institute](https://www.hbku.edu.qa/en/qcri), Doha, Qatar.
-  - Built offensive-language detection models for Turkish Twitter data, training classical baselines (SVM, logistic regression) with scikit-learn alongside a BERT-based classifier in Keras.
-  - Worked with both public corpora and internal QCRI Turkish Twitter datasets, comparing classical and transformer-based approaches to inform a content-moderation pipeline.
+  - Built an offensive-language detection model for Turkish Twitter data, training and comparing classical baselines (SVM, Naive Bayes) in scikit-learn against a BERT-based classifier in Keras, using both publicly available corpora and internal QCRI datasets.
 
 - *Jul 2022 – Aug 2022*, **Software Engineering Intern**, [NewMind AI](https://newmind.ai/), Istanbul, Turkey.
-  - Developed an object detection model for solving CAPTCHAs in a web-scraping pipeline.
-  - Implemented a speech-to-text system for meeting-recording transcription.
+  - Developed an object detection model for solving CAPTCHAs in a web-scraping pipeline, and implemented a speech-to-text system for meeting-recording transcription.
 
 
 # 🧪 Projects
@@ -79,7 +77,7 @@ You can grab my [CV / resume](files/mahmutgoksu-resume.pdf).
 # 📖 Education
 
 - *Sep 2021 – Jun 2025*, **B.Sc. in Computer Engineering**, Koç University, Istanbul, Turkey. GPA: 3.5 / 4.0.
-  - Relevant coursework: Machine Learning (COMP421), Deep Learning (COMP441), Computer Vision with Deep Learning (COMP411), Reinforcement Learning (COMP438), Deep Unsupervised Learning (COMP447), Artificial Intelligence (COMP341), Operating Systems (COMP304).
+  - Relevant coursework: Machine Learning (COMP421), Deep Learning (COMP441), Computer Vision with Deep Learning (COMP411), Reinforcement Learning (COMP438), Deep Unsupervised Learning (COMP447).
 
 
 # 🛠 Skills
